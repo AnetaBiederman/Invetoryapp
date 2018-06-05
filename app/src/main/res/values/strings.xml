@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Invetory app</string>
+    <string name="action_settings">Settings</string>
+    <string name="author_hint">AUTHOR</string>
+    <string name="price_text_view">Price</string>
+    <string name="book_details_text_view">Book details</string>
+    <string name="book_name_hint">BOOK NAME</string>
+    <string name="supplier_name_hint">SUPPLIER NAME</string>
+    <string name="supplier_phone_hint">SUPPLIER PHONE</string>
+    <string name="price_hint">PRICE</string>
+    <string name="quantity_text_view">Quantity</string>
+    <string name="quantity_hint">QUANTITY</string>
+    <string name="supplier_details_text_view">Supplier Details</string>
+    <string name="add_book_label">Add book</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="supplier_details">Supplier details</string>
+    <string name="pcs">pcs</string>
+</resources>
