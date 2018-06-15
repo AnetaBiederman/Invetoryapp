@@ -4,6 +4,8 @@ import android.provider.BaseColumns;
 
 public final class BookContract {
 
+    private BookContract (){}
+
         public static abstract class BookEntry implements BaseColumns {
 
             public static final String TABLE_NAME = "books";

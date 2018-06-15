@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -16,23 +18,41 @@ import com.example.android.invetoryapp.data.BookContract.BookEntry;
 
 public class EditorActivity extends AppCompatActivity {
 
-    /** EditText field to enter the book's name*/
-    private EditText mBookNameEditText;
+    /**
+     * EditText field to enter the book's name
+     */
+    private EditText bookNameEditText;
 
-    /** EditText field to enter the book's author */
-    private EditText mBookAuthorEditText;
+    /**
+     * EditText field to enter the book's author
+     */
+    private EditText bookAuthorEditText;
 
-    /** EditText field to enter the price of book */
-    private EditText mBookPriceEditText;
+    /**
+     * EditText field to enter the price of book
+     */
+    private EditText bookPriceEditText;
 
-    /** EditText field to enter the quantity of the book on stock */
-    private EditText mBookQuantityEditText;
+    /**
+     * EditText field to enter the quantity of the book on stock
+     */
+    private EditText bookQuantityEditText;
 
-    /** EditText field to enter the supplier's name */
-    private EditText mSupplierNameEditText;
+    /**
+     * EditText field to enter the supplier's name
+     */
+    private EditText supplierNameEditText;
 
-    /** EditText field to enter the supplier's phone */
-    private EditText mSupplierPhoneEditText;
+    /**
+     * EditText field to enter the supplier's phone
+     */
+    private EditText supplierPhoneEditText;
+
+    /**
+     * Menu so we can use it in TextWatcher.
+     */
+
+    Menu myMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +60,98 @@ public class EditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editor);
 
         // Find all relevant views that we will need to read user input from
-        mBookNameEditText = findViewById(R.id.book_name_ET);
-        mBookAuthorEditText = findViewById(R.id.author_ET);
-        mBookPriceEditText = findViewById(R.id.price_ET);
-        mBookQuantityEditText = findViewById(R.id.quantity_ET);
-        mSupplierNameEditText = findViewById(R.id.supplier_name_ET);
-        mSupplierPhoneEditText = findViewById(R.id.supplier_phone_ET);
+        bookNameEditText = findViewById(R.id.book_name_ET);
+        bookAuthorEditText = findViewById(R.id.author_ET);
+        bookPriceEditText = findViewById(R.id.price_ET);
+        bookQuantityEditText = findViewById(R.id.quantity_ET);
+        supplierNameEditText = findViewById(R.id.supplier_name_ET);
+        supplierPhoneEditText = findViewById(R.id.supplier_phone_ET);
+
+// Add textChangeListener for each editText
+        bookNameEditText.addTextChangedListener(editorScreenTextWatcher);
+        bookAuthorEditText.addTextChangedListener(editorScreenTextWatcher);
+        bookPriceEditText.addTextChangedListener(editorScreenTextWatcher);
+        bookQuantityEditText.addTextChangedListener(editorScreenTextWatcher);
+        supplierNameEditText.addTextChangedListener(editorScreenTextWatcher);
+        supplierPhoneEditText.addTextChangedListener(editorScreenTextWatcher);
 
     }
+
+    // TextWatcher to create save button enable if all text fields are filled and set error message if not.
+    private TextWatcher editorScreenTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        // Check if fields are not empty. If it is true enable save menu button.
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String nameString = bookNameEditText.getText().toString().trim();
+            String authorString = bookAuthorEditText.getText().toString().trim();
+            String priceString = bookPriceEditText.getText().toString().trim();
+            String quantityString = bookQuantityEditText.getText().toString().trim();
+            String supplierNameString = supplierNameEditText.getText().toString().trim();
+            String supplierPhoneString = supplierPhoneEditText.getText().toString().trim();
+
+            myMenu.findItem(R.id.action_save).setEnabled(
+                    !nameString.isEmpty() &&
+                            !authorString.isEmpty() &&
+                            !priceString.isEmpty() &&
+                            !quantityString.isEmpty() &&
+                            !supplierNameString.isEmpty() &&
+                            !supplierPhoneString.isEmpty());
+        }
+
+        // check if text fields are filled, if not display error message.
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (bookNameEditText.getText().toString().equalsIgnoreCase("")) {
+                bookNameEditText.setError(getString(R.string.error_book_name));
+            } else {
+                bookNameEditText.setError(null);
+            }
+            if (bookAuthorEditText.getText().toString().equalsIgnoreCase("")) {
+                bookAuthorEditText.setError(getString(R.string.error_book_author));
+            } else {
+                bookAuthorEditText.setError(null);
+            }
+            if (bookQuantityEditText.getText().toString().equalsIgnoreCase("")) {
+                bookQuantityEditText.setError(getString(R.string.error_qunatity));
+            } else {
+                bookQuantityEditText.setError(null);
+            }
+            if (bookPriceEditText.getText().toString().equalsIgnoreCase("")) {
+                bookPriceEditText.setError(getString(R.string.error_price));
+            } else {
+                bookPriceEditText.setError(null);
+            }
+            if (supplierNameEditText.getText().toString().equalsIgnoreCase("")) {
+                supplierNameEditText.setError(getString(R.string.error_supplier_name));
+            } else {
+                supplierNameEditText.setError(null);
+            }
+            if (supplierPhoneEditText.getText().toString().equalsIgnoreCase("")) {
+                supplierPhoneEditText.setError(getString(R.string.error_supplier_phone));
+            } else {
+                supplierPhoneEditText.setError(null);
+            }
+
+        }
+    };
 
     /**
      * Helper method to insert book data into the database.
      */
     private void insertBook() {
-        String nameString = mBookNameEditText.getText().toString().trim();
-        String authorString = mBookAuthorEditText.getText().toString().trim();
-        String priceString = mBookPriceEditText.getText().toString().trim();
+        String nameString = bookNameEditText.getText().toString().trim();
+        String authorString = bookAuthorEditText.getText().toString().trim();
+        String priceString = bookPriceEditText.getText().toString().trim();
         int priceInt = Integer.parseInt(priceString);
-        String quantityString = mBookQuantityEditText.getText().toString().trim();
+        String quantityString = bookQuantityEditText.getText().toString().trim();
         int quantityInt = Integer.parseInt(quantityString);
-        String supplierNameString = mSupplierNameEditText.getText().toString().trim();
-        String supplierPhoneString = mSupplierPhoneEditText.getText().toString().trim();
+        String supplierNameString = supplierNameEditText.getText().toString().trim();
+        String supplierPhoneString = supplierPhoneEditText.getText().toString().trim();
 
         // Create database helper
         BookDbHelper mDbHelper = new BookDbHelper(this);
@@ -94,6 +185,17 @@ public class EditorActivity extends AppCompatActivity {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Save reference to the menu
+        myMenu = menu;
+
+        // Disable Send Button
+        myMenu.findItem(R.id.action_save).setEnabled(false);
+
         return true;
     }
 
