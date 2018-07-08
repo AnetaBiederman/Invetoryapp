@@ -2,4 +2,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="padding">16dp</dimen>
     <dimen name="floating_bar_size">65dp</dimen>
+    <dimen name="margin">8dp</dimen>
+    <dimen name="icon_size_list_view">40dp</dimen>
 </resources>

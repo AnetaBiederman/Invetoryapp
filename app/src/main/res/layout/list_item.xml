@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin">
+
+    <ImageView
+        android:id="@+id/product_image"
+        android:layout_width="76dp"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:layout_gravity="left"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/dark_text" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/light_text" />
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/light_text" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/dark_text" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="right">
+
+        <ImageView
+            android:id="@+id/sale_icon"
+            android:layout_width="@dimen/icon_size_list_view"
+            android:layout_height="@dimen/icon_size_list_view"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/shop" />
+
+        <ImageView
+            android:id="@+id/edit_icon"
+            android:layout_width="@dimen/icon_size_list_view"
+            android:layout_height="@dimen/icon_size_list_view"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/edit"/>
+
+        <TextView
+            android:id="@+id/quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding"
+            android:layout_alignParentBottom="true"
+            android:text="0"
+            android:fontFamily="sans-serif"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/dark_text"/>
+
+    </RelativeLayout>
+</LinearLayout>
