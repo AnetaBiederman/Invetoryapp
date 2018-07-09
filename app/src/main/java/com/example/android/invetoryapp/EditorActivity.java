@@ -62,11 +62,11 @@ public class EditorActivity extends AppCompatActivity implements
     private EditText supplierPhoneEditText;
     private ImageButton decreaseQuantity;
     private ImageButton increaseQuantity;
+    private ImageButton call;
     String uploadImage;
     private ImageView bookImage;
     private Boolean image_status;
     private ImageView bookPreview;
-    private static final int existingStorage = 0;
 
     /**
      * Category of the item. The possible valid values are in BookContract.java file:
@@ -110,15 +110,18 @@ public class EditorActivity extends AppCompatActivity implements
         if (mCurrentBookUri == null) {
             // This is a new book, so change the app bar to say "Add a Book"
             setTitle(getString(R.string.editor_activity_title_new_book));
-
             // Invalidate the options menu, so the "Delete" menu option can be hidden.
             // (It doesn't make sense to delete a book that hasn't been created yet.)
             invalidateOptionsMenu();
+
             image_status = false;
+
         } else {
             // Otherwise this is an existing book, so change app bar to say "Edit Book"
             setTitle(getString(R.string.editor_activity_title_edit_book));
             image_status = true;
+            call = findViewById(R.id.call);
+            call.setVisibility(View.VISIBLE);
 
             // Initialize a loader to read the book data from the database
             // and display the current values in the editor
@@ -136,6 +139,7 @@ public class EditorActivity extends AppCompatActivity implements
         supplierPhoneEditText = findViewById(R.id.supplier_phone_ET);
         decreaseQuantity = findViewById(R.id.imageButton_minus);
         increaseQuantity = findViewById(R.id.imageButton_plus);
+        call = findViewById(R.id.call);
 
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
@@ -174,6 +178,13 @@ public class EditorActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 tryToOpenImageSelector();
                 mBookHasChanged = true;
+            }
+        });
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orderBooks();
             }
         });
 
@@ -268,12 +279,12 @@ public class EditorActivity extends AppCompatActivity implements
         // Check if this is supposed to be a new book
         // and check if all the fields in the editor are blank
         if (mCurrentBookUri == null &&
-                mCategory == BookEntry.CATEGORY_UNKNOWN && TextUtils.isEmpty(nameString) &&
-                TextUtils.isEmpty(authorString) && TextUtils.isEmpty(priceString) &&
-                TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(supplierNameString) &&
-                TextUtils.isEmpty(supplierPhoneString)) {
-            // Since no fields were modified, we can return early without creating a new book.
-            // No need to create ContentValues and no need to do any ContentProvider operations.
+                mCategory == BookEntry.CATEGORY_UNKNOWN || TextUtils.isEmpty(nameString) ||
+                TextUtils.isEmpty(authorString) || TextUtils.isEmpty(priceString) ||
+                TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(supplierNameString) ||
+                TextUtils.isEmpty(supplierPhoneString)|| image_status !=null) {
+
+            Toast.makeText(this, R.string.data_not_filled,Toast.LENGTH_SHORT).show();
             return;
         }
 
