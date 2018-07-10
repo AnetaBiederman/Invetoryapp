@@ -60,12 +60,8 @@ public class EditorActivity extends AppCompatActivity implements
     private EditText bookQuantityEditText;
     private EditText supplierNameEditText;
     private EditText supplierPhoneEditText;
-    private ImageButton decreaseQuantity;
-    private ImageButton increaseQuantity;
-    private ImageButton call;
     String uploadImage;
     private ImageView bookImage;
-    private Boolean image_status;
     private ImageView bookPreview;
 
     /**
@@ -107,6 +103,7 @@ public class EditorActivity extends AppCompatActivity implements
 
         // If the intent DOES NOT contain a book content URI, then we know that we are
         // creating a new book.
+        ImageButton call;
         if (mCurrentBookUri == null) {
             // This is a new book, so change the app bar to say "Add a Book"
             setTitle(getString(R.string.editor_activity_title_new_book));
@@ -114,12 +111,9 @@ public class EditorActivity extends AppCompatActivity implements
             // (It doesn't make sense to delete a book that hasn't been created yet.)
             invalidateOptionsMenu();
 
-            image_status = false;
-
         } else {
             // Otherwise this is an existing book, so change app bar to say "Edit Book"
             setTitle(getString(R.string.editor_activity_title_edit_book));
-            image_status = true;
             call = findViewById(R.id.call);
             call.setVisibility(View.VISIBLE);
 
@@ -137,8 +131,8 @@ public class EditorActivity extends AppCompatActivity implements
         bookQuantityEditText = findViewById(R.id.quantity_ET);
         supplierNameEditText = findViewById(R.id.supplier_name_ET);
         supplierPhoneEditText = findViewById(R.id.supplier_phone_ET);
-        decreaseQuantity = findViewById(R.id.imageButton_minus);
-        increaseQuantity = findViewById(R.id.imageButton_plus);
+        ImageButton decreaseQuantity = findViewById(R.id.imageButton_minus);
+        ImageButton increaseQuantity = findViewById(R.id.imageButton_plus);
         call = findViewById(R.id.call);
 
 
@@ -282,7 +276,7 @@ public class EditorActivity extends AppCompatActivity implements
                 mCategory == BookEntry.CATEGORY_UNKNOWN || TextUtils.isEmpty(nameString) ||
                 TextUtils.isEmpty(authorString) || TextUtils.isEmpty(priceString) ||
                 TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(supplierNameString) ||
-                TextUtils.isEmpty(supplierPhoneString)|| image_status !=null) {
+                TextUtils.isEmpty(supplierPhoneString)|| bookImage == null) {
 
             Toast.makeText(this, R.string.data_not_filled,Toast.LENGTH_SHORT).show();
             return;

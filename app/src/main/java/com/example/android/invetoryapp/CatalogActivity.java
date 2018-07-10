@@ -1,6 +1,7 @@
 package com.example.android.invetoryapp;
 
 import android.app.LoaderManager;
+import android.app.SearchableInfo;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -106,8 +107,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+        searchView.setSearchableInfo(searchableInfo);
         return true;
     }
 

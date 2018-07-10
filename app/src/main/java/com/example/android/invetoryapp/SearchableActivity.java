@@ -5,22 +5,36 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.support.v7.widget.SearchView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-import com.example.android.invetoryapp.data.BookContract;
 import com.example.android.invetoryapp.data.BookDbHelper;
 import com.example.android.invetoryapp.data.MyApplication;
+import com.example.android.invetoryapp.data.BookContract.BookEntry;
+
 
 public class SearchableActivity extends ListActivity {
+
+    private BookDbHelper mDbHelper;
+    protected SQLiteDatabase db;
+    protected Cursor cursor;
+    protected ListAdapter adapter;
+    protected ListView searchLV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
         handleIntent(getIntent());
+
+        searchLV = findViewById (android.R.id.list);
+
+        db = (new BookDbHelper(this)).getReadableDatabase();
     }
 
     @Override
@@ -37,14 +51,22 @@ public class SearchableActivity extends ListActivity {
     }
 
     private void doMySearch(String query) {
-        BookDbHelper bookDbHelper = ((MyApplication)getApplication()).getDbHelper();
 
-        Cursor cursor = bookDbHelper.getReadableDatabase().rawQuery("SELECT " + BookContract.BookEntry.COLUMN_BOOK_NAME + ", " +
-                BookContract.BookEntry.COLUMN_BOOK_AUTHOR + " FROM " + BookContract.BookEntry.TABLE_NAME +
-                " WHERE upper(" + BookContract.BookEntry.COLUMN_BOOK_NAME + ") like '%" + query.toUpperCase() + "%'", null);
-        setListAdapter(new SimpleCursorAdapter(this, R.layout.list_item, cursor,
-                new String[] {BookContract.BookEntry.COLUMN_BOOK_NAME }, new int[]{R.id.name}));
+        cursor = db.rawQuery("SELECT _id, category, book_name, book_author, price, quantity, book_image FROM books WHERE book_name LIKE ? order by book_name",
+                new String[]{"%" + query + "%"});
+        adapter = new SimpleCursorAdapter(
+                this,
+                R.layout.list_item,
+                cursor,
+                new String[] {"category", "book_name", "book_author", "price", "quantity", "book_image"},
+                new int[] {R.id.category, R.id.name, R.id.author, R.id.price, R.id.quantity, R.id.product_image});
+
+        int bookNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_NAME);
+        String bookName = cursor.getString(bookNameColumnIndex);
+
+        searchLV.setAdapter(adapter);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

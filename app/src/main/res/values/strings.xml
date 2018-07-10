@@ -78,7 +78,10 @@
     <string name="contact_supplier">Contact Supplier</string>
     <string name="supplier_info">Supplier Info:</string>
     <string name="call_supplier">Call supplier</string>
-    <string name="search_hint">Search student</string>
+    <string name="search_hint">Search book</string>
+    <string name="search">Search book name</string>
+    <string name="flag_description">Book Flag</string>
+    <string name="search_settings">Search book name</string>
 
 
 </resources>
